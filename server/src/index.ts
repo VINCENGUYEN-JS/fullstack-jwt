@@ -12,6 +12,7 @@ import {
 } from "apollo-server-core";
 
 import { GreetingResolver } from "./resolvers/greeting";
+import { UserResolver } from "./resolvers/user";
 
 const main = async () => {
   const AppDataSource = new DataSource({
@@ -33,7 +34,7 @@ const main = async () => {
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       validate: false,
-      resolvers: [GreetingResolver],
+      resolvers: [GreetingResolver, UserResolver],
     }),
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
