@@ -40,6 +40,9 @@ const main = async () => {
       ApolloServerPluginDrainHttpServer({ httpServer }),
       ApolloServerPluginLandingPageGraphQLPlayground,
     ],
+    context: ({ req, res }) => {
+      return { req, res };
+    },
   });
 
   await apolloServer.start();

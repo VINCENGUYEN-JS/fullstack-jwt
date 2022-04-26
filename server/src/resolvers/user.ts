@@ -49,7 +49,7 @@ export class UserResolver {
     const existingUser = await User.findOne({ where: { username: username } });
     if (!existingUser) {
       return {
-        code: 400,
+        code: 401,
         success: false,
         message: "User not found",
       };
@@ -61,7 +61,7 @@ export class UserResolver {
 
     if (!isPasswordValid) {
       return {
-        code: 400,
+        code: 401,
         success: false,
         message: "Incorrect password",
       };
