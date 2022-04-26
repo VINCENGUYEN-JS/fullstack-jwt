@@ -9,4 +9,7 @@ export class UserMutationResponse implements IMutationResponse {
   message?: string;
   @Field({ nullable: true })
   user?: User;
+
+  @Field({ nullable: true })
+  accessToken?: string;
 }
