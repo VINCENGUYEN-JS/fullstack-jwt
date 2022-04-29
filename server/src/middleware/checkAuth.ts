@@ -1,6 +1,6 @@
 import { MiddlewareFn } from "type-graphql";
 import { AuthenticationError } from "apollo-server-express";
-import jwt, { JwtPayload, Secret } from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
 
 import { Context } from "../types/Context";
 import { PayloadAuth } from "../types/PayloadAuth";
