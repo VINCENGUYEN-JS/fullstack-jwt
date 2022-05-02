@@ -6,8 +6,20 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Register from "./components/Register";
+import { useAuthContext } from "./contexts/AuthContext";
 
 function App() {
+  const [loading, setLoading] = React.useState(true);
+  const { checkAuth, isAuthenticated } = useAuthContext();
+
+  React.useEffect(() => {
+    const authenticate = async () => {
+      if (!isAuthenticated) await checkAuth();
+      setLoading(false);
+    };
+    authenticate();
+  }, []);
+  if (loading) return <div>Loading...</div>;
   return (
     <div className="App">
       <BrowserRouter>
