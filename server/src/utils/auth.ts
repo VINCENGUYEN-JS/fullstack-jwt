@@ -15,7 +15,7 @@ export const createToken = (
       ? (process.env.ACCESS_TOKEN as Secret)
       : (process.env.REFRESH_TOKEN as Secret),
     {
-      expiresIn: type === "accessToken" ? "5m" : "60m",
+      expiresIn: type === "accessToken" ? "1m" : "60m",
     }
   );
 };

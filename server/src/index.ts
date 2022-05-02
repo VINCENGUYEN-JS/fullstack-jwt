@@ -2,19 +2,20 @@ require("dotenv").config();
 import { createServer } from "http";
 import express from "express";
 import "reflect-metadata";
-import { DataSource } from "typeorm";
-import { User } from "./entities/User";
-import { ApolloServer } from "apollo-server-express";
-import { buildSchema } from "type-graphql";
 import {
   ApolloServerPluginDrainHttpServer,
   ApolloServerPluginLandingPageGraphQLPlayground,
 } from "apollo-server-core";
+import cookieParser from "cookie-parser";
+import { DataSource } from "typeorm";
+import cors from "cors";
 
+import { User } from "./entities/User";
+import { ApolloServer } from "apollo-server-express";
+import { buildSchema } from "type-graphql";
 import { GreetingResolver } from "./resolvers/greeting";
 import { UserResolver } from "./resolvers/user";
 import refreshTokenRouter from "./routes/refreshTokenRouter";
-import cookieParser from "cookie-parser";
 
 const main = async () => {
   const AppDataSource = new DataSource({
@@ -32,6 +33,8 @@ const main = async () => {
 
   const app = express();
   const httpServer = createServer(app);
+
+  app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
   app.use(cookieParser());
 
