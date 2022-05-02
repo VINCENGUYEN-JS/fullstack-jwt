@@ -28,6 +28,7 @@ const JWTManager = () => {
     if (data.success) {
       setToken(data.accessToken);
     }
+    return true;
   };
 
   const setRefreshTokenTimeOut = (time: number) => {
@@ -40,6 +41,7 @@ const JWTManager = () => {
   return {
     getToken,
     setToken,
+    getRefreshToken,
   };
 };
 
