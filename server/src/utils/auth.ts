@@ -24,6 +24,6 @@ export const sendRefreshToken = (res: Response, user: User) => {
   res.cookie(
     process.env.REFRESH_TOKEN_NAME as string,
     createToken("refreshToken", user),
-    { httpOnly: true, secure: true, sameSite: "lax" }
+    { httpOnly: true, secure: true, sameSite: "lax", path: "/refresh_token" }
   );
 };

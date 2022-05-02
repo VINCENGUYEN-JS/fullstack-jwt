@@ -74,7 +74,6 @@ export class UserResolver {
       };
     }
 
-    console.log({ res: res.cookie });
     sendRefreshToken(res, existingUser);
 
     return {

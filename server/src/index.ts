@@ -13,6 +13,8 @@ import {
 
 import { GreetingResolver } from "./resolvers/greeting";
 import { UserResolver } from "./resolvers/user";
+import refreshTokenRouter from "./routes/refreshTokenRouter";
+import cookieParser from "cookie-parser";
 
 const main = async () => {
   const AppDataSource = new DataSource({
@@ -30,6 +32,10 @@ const main = async () => {
 
   const app = express();
   const httpServer = createServer(app);
+
+  app.use(cookieParser());
+
+  app.use("/refresh_token", refreshTokenRouter);
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
