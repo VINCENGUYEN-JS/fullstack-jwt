@@ -10,6 +10,7 @@ export const createToken = (
   return jwt.sign(
     {
       id: user.id,
+      ...(type === "refreshToken" ? { tokenVersion: user.tokenVersion } : {}),
     },
     type === "accessToken"
       ? (process.env.ACCESS_TOKEN as Secret)

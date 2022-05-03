@@ -10,6 +10,7 @@ const JWTManager = () => {
   let refreshTokenTimeOutId: number | null = null;
   let userId: number | null = null;
   const getToken = () => inMemoryToken;
+
   const setToken = (accessToken: string) => {
     inMemoryToken = accessToken;
     const decodedToken = jwtDecode<JwtPayload & { id: number }>(accessToken);
@@ -19,14 +20,18 @@ const JWTManager = () => {
     );
     return true;
   };
+
   const getUserId = () => userId;
+
   const abortRefreshToken = () => {
     if (refreshTokenTimeOutId) window.clearTimeout(refreshTokenTimeOutId);
   };
+
   const deleteToken = () => {
     inMemoryToken = null;
     abortRefreshToken();
   };
+
   const getRefreshToken = async () => {
     try {
       const response = await fetch("http://localhost:4000/refresh_token", {
@@ -34,6 +39,7 @@ const JWTManager = () => {
       });
       const data: DataResponse = await response.json();
       if (data.success) {
+        abortRefreshToken();
         setToken(data.accessToken);
       }
     } catch (err) {

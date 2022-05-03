@@ -9,7 +9,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   const refreshToken = req.cookies[process.env.REFRESH_TOKEN_NAME as string];
   if (!refreshToken) {
-    return res.status(401);
+    return res.status(401).end();
   }
   try {
     const decodedUser = jwt.verify(
@@ -17,8 +17,11 @@ router.get("/", async (req, res) => {
       process.env.REFRESH_TOKEN as Secret
     ) as PayloadAuth;
     const existingUser = await User.findOne({ where: { id: decodedUser.id } });
-    if (!existingUser) {
-      return res.status(401);
+    if (
+      !existingUser ||
+      existingUser.tokenVersion !== decodedUser.tokenVersion
+    ) {
+      return res.status(401).end();
     }
     sendRefreshToken(res, existingUser);
     return res.json({
@@ -26,7 +29,7 @@ router.get("/", async (req, res) => {
       accessToken: createToken("accessToken", existingUser),
     });
   } catch (err) {
-    return res.status(403).send(err);
+    return res.status(403).end();
   }
 });
 
