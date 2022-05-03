@@ -20,15 +20,25 @@ const JWTManager = () => {
     );
     return true;
   };
+  const abortRefreshToken = () => {
+    if (refreshTokenTimeOutId) window.clearTimeout(refreshTokenTimeOutId);
+  };
+  const deleteToken = () => {
+    inMemoryToken = null;
+    abortRefreshToken();
+  };
   const getRefreshToken = async () => {
-    const response = await fetch("http://localhost:4000/refresh_token", {
-      credentials: "include",
-    });
-    const data: DataResponse = await response.json();
-    if (data.success) {
-      setToken(data.accessToken);
+    try {
+      const response = await fetch("http://localhost:4000/refresh_token", {
+        credentials: "include",
+      });
+      const data: DataResponse = await response.json();
+      if (data.success) {
+        setToken(data.accessToken);
+      }
+    } catch (err) {
+      deleteToken();
     }
-    return true;
   };
 
   const setRefreshTokenTimeOut = (time: number) => {
@@ -41,6 +51,7 @@ const JWTManager = () => {
   return {
     getToken,
     setToken,
+    deleteToken,
     getRefreshToken,
   };
 };

@@ -10,11 +10,11 @@ import { useAuthContext } from "./contexts/AuthContext";
 
 function App() {
   const [loading, setLoading] = React.useState(true);
-  const { checkAuth, isAuthenticated } = useAuthContext();
+  const { checkAuth } = useAuthContext();
 
   React.useEffect(() => {
     const authenticate = async () => {
-      if (!isAuthenticated) await checkAuth();
+      await checkAuth();
       setLoading(false);
     };
     authenticate();

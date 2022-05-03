@@ -1,11 +1,11 @@
 import {
-  useState,
-  Dispatch,
-  SetStateAction,
   createContext,
+  Dispatch,
   ReactNode,
-  useContext,
+  SetStateAction,
   useCallback,
+  useContext,
+  useState,
 } from "react";
 import JWTManager from "../utils/jwt";
 
@@ -33,17 +33,15 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const checkAuth = useCallback(async () => {
-    const token = JWTManager.getToken();
-
-    if (token) setIsAuthenticated(true);
+    if (JWTManager.getToken()) setIsAuthenticated(true);
     else {
-      const success = await JWTManager.getRefreshToken();
-      if (success) setIsAuthenticated(true);
+      await JWTManager.getRefreshToken();
+      if (JWTManager.getToken()) setIsAuthenticated(true);
     }
   }, []);
 
   const logoutClient = () => {
-    // JWTManager.deleteToken();
+    JWTManager.deleteToken();
     setIsAuthenticated(false);
   };
 
