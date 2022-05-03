@@ -8,18 +8,18 @@ type DataResponse = {
 const JWTManager = () => {
   let inMemoryToken: string | null;
   let refreshTokenTimeOutId: number | null = null;
+  let userId: number | null = null;
   const getToken = () => inMemoryToken;
   const setToken = (accessToken: string) => {
     inMemoryToken = accessToken;
-    const decodedToken = jwtDecode<JwtPayload & { userId: number }>(
-      accessToken
-    );
-
+    const decodedToken = jwtDecode<JwtPayload & { id: number }>(accessToken);
+    userId = decodedToken.id;
     setRefreshTokenTimeOut(
       (decodedToken.exp as number) - (decodedToken.iat as number)
     );
     return true;
   };
+  const getUserId = () => userId;
   const abortRefreshToken = () => {
     if (refreshTokenTimeOutId) window.clearTimeout(refreshTokenTimeOutId);
   };
@@ -53,6 +53,7 @@ const JWTManager = () => {
     setToken,
     deleteToken,
     getRefreshToken,
+    getUserId,
   };
 };
 

@@ -14,6 +14,7 @@ interface IAuthContext {
   setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
   checkAuth: () => Promise<void>;
   logoutClient: () => void;
+  getUserId: () => number | null;
 }
 
 const defaultIsAuthenticated = false;
@@ -23,6 +24,7 @@ export const AuthContext = createContext<IAuthContext>({
   setIsAuthenticated: () => {},
   checkAuth: () => Promise.resolve(),
   logoutClient: () => {},
+  getUserId: () => null,
 });
 
 export const useAuthContext = () => useContext(AuthContext);
@@ -50,6 +52,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     setIsAuthenticated,
     checkAuth,
     logoutClient,
+    getUserId: JWTManager.getUserId,
   };
 
   return (

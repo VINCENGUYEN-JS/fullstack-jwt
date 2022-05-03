@@ -1,7 +1,7 @@
 import { RegisterInput } from "../types/RegisterInput";
 import { LoginInput } from "../types/LoginInput";
 import { UserMutationResponse } from "../types/UserMutationResponse";
-import { Resolver, Mutation, Arg, Query, Ctx } from "type-graphql";
+import { Resolver, Mutation, Arg, Query, Ctx, ID } from "type-graphql";
 import argon2 from "argon2";
 
 import { User } from "../entities/User";
@@ -82,6 +82,30 @@ export class UserResolver {
       message: "Logged in successfully",
       user: existingUser,
       accessToken: createToken("accessToken", existingUser),
+    };
+  }
+
+  @Mutation(() => UserMutationResponse)
+  async logout(
+    @Arg("userId", (_type) => ID) userId: number,
+    @Ctx() { res }: Context
+  ): Promise<UserMutationResponse> {
+    const existingUser = await User.findOne({ where: { id: userId } });
+    if (!existingUser) {
+      return {
+        code: 401,
+        success: false,
+        message: "User not found",
+      };
+    }
+    existingUser.tokenVersion += 1;
+
+    await existingUser.save();
+    res.clearCookie(process.env.REFRESH_TOKEN_NAME as string);
+    return {
+      code: 200,
+      success: true,
+      message: "Logged out successfully",
     };
   }
 }
