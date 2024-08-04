@@ -18,6 +18,16 @@ The Ultimate Guide to handling JWTs on frontend clients and server
 * AccessToken is used to protect routes on server and hide UI in front-end ( FE doesn't keep it only in app's memories so the hacker would have no way to steal it )
 * RefreshToken is used to ask for accesstoken once user log-in , log-out , refresh page ( keep user consitency )
 
+<img width="1386" alt="image" src="https://github.com/user-attachments/assets/879e726e-66ff-4858-abc2-0d8e833cfd99">
+
+
+
+## Advantages of AT(accessToken) and RefreshToken(RT)
+* Access token is stored on memory (not possible to attack with XSS)
+* Cookie token only used to query accessToken (not possible to attack with CSRF)
+* AccessToken can be used to validiate data
+* Reduce the works on BE due to micro-services architect and load balancers (help with scalability)
+* Roles can be stored inside accessToken for FE to seperate roles
 
 ## FE flows
 * User sends credential via login or register
@@ -34,3 +44,6 @@ The Ultimate Guide to handling JWTs on frontend clients and server
 
 ## Acknowledgments
 Inspired by https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/
+
+![Uploading image.png…]()
+
